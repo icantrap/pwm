@@ -2,6 +2,18 @@
 #
 # todo. documentation: project name, location, license
 
+_timestamp() {
+  # delete the old timestamp
+  perl -i -0pe "s/# === ts:(.*) ===.//s" "$PIHOLE_DIR/whitelist.txt"
+
+  # insert the new timestamp
+  echo "# === ts:$(date +%s) ===" >> "$PIHOLE_DIR/whitelist.txt"
+}
+
+update () {
+  git pull 2> /dev/null 
+}
+
 search() {
   if [ -z "$1" ]
   then
@@ -94,6 +106,7 @@ fi
 # launch
 if declare -f "$1" >/dev/null 2>&1; then
   "$@"
+  _timestamp
 else
   echo "Unrecognized command: $1"
 
@@ -103,3 +116,4 @@ fi
 # todo. help screens?
 # todo. continuous integration
 # todo. automatic update
+# todo. a lot more messaging.
