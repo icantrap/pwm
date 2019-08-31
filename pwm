@@ -7,7 +7,7 @@ search() {
   then
     ls -1 sites
   else
-    ls -1 sites/*"$1"* 2> /dev/null
+    find sites -name "*$1*" -exec basename {} \;
   fi
 
   return 0
@@ -102,3 +102,4 @@ fi
 
 # todo. help screens?
 # todo. continuous integration
+# todo. automatic update

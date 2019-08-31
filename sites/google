@@ -1,0 +1,14 @@
+# === site:google start ===
+
+# Google Maps and other Google services
+clients4.google.com 
+clients2.google.com
+
+# Google Keep
+reminders-pa.googleapis.com
+firestore.googleapis.com
+
+# Google Play
+android.clients.google.com
+
+# === site:google end ===

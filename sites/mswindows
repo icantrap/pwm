@@ -1,0 +1,11 @@
+# === site:mswindows start ===
+
+# Windows Store
+dl.delivery.mp.microsoft.com
+geo-prod.do.dsp.mp.microsoft.com
+displaycatalog.mp.microsoft.com
+
+# Windows uses this to verify connectivity to Internet
+www.msftncsi.com
+
+# === site:mswindows end ===

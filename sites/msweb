@@ -1,0 +1,10 @@
+# === site:msweb start ===
+
+# Windows uses this to verify connectivity to Internet
+outlook.office365.com
+products.office.com
+c.s-microsoft.com
+i.s-microsoft.com login.live.com
+login.microsoftonline.com
+
+# === site:msweb end ===

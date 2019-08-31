@@ -1,0 +1,7 @@
+# === site:sonarr start ===
+services.sonarr.tv
+skyhook.sonarr.tv
+download.sonarr.tv
+apt.sonarr.tv
+forums.sonarr.tv
+# === site:sonarr end ===
