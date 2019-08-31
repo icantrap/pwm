@@ -30,10 +30,10 @@ show() {
 }
 
 list() {
-  [ ! -f "etc-pihole/whitelist.txt" ] && return
+  [ ! -f "$PIHOLE_DIR/whitelist.txt" ] && return
 
   # look for the site headers. show just the site name in the results.
-  grep -E "# === site:(.*) start ===" etc-pihole/whitelist.txt | sed -E 's/# === site:(.*) start ===/\1/'
+  grep -E "# === site:(.*) start ===" "$PIHOLE_DIR/whitelist.txt" | sed -E 's/# === site:(.*) start ===/\1/'
 }
 
 add() {
@@ -51,9 +51,7 @@ add() {
 
   # todo. accept multiple sites
 
-  cat sites/"$1" >> etc-pihole/whitelist.txt
-
-  # todo. run pihole command
+  cat sites/"$1" >> "$PIHOLE_DIR/whitelist.txt"
 }
 
 remove() {
@@ -63,6 +61,7 @@ remove() {
     return 1
   fi
 
+  # todo. refactor?
   if [ ! -f "sites/$1" ]
   then
     echo "Nonexistent site: $1"
@@ -72,11 +71,27 @@ remove() {
   # todo. warn if the site isn't in whitelist.
   # todo. accept multiple sites
 
-  perl -i -0pe "s/# === site:$1 start ===.*# === site:$1 end ===\n//sg" etc-pihole/whitelist.txt
-
-  # todo. run pihole command
+  perl -i -0pe "s/# === site:$1 start ===.*# === site:$1 end ===\n//sg" "$PIHOLE_DIR/whitelist.txt"
 }
 
+# load the environment
+PIHOLE_DIR=/etc/pihole
+
+# shellcheck source=/dev/null
+[ -f ~/.pwmrc ] && source "$HOME/.pwmrc"
+# shellcheck source=/dev/null
+[ -f .pwmrc ] && source .pwmrc
+
+echo "PIHOLE_DIR=$PIHOLE_DIR"
+
+# validate the environment
+if [ ! -d $PIHOLE_DIR ]
+then
+  echo "PIHOLE_DIR($PIHOLE_DIR) does not exist"
+  exit 1
+fi
+
+# launch
 if declare -f "$1" >/dev/null 2>&1; then
   "$@"
 else
@@ -85,5 +100,5 @@ else
   exit 1
 fi
 
-# todo. make it work with live directories, not test directories
 # todo. help screens?
+# todo. continuous integration
