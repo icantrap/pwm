@@ -1,0 +1,89 @@
+#!/bin/bash
+#
+# todo. documentation: project name, location, license
+
+search() {
+  if [ -z "$1" ]
+  then
+    ls -1 sites
+  else
+    ls -1 sites/*"$1"* 2> /dev/null
+  fi
+
+  return 0
+}
+
+show() {
+  if [ -z "$1" ]
+  then
+    echo "Usage: pwm show site"
+    return 1
+  fi
+
+  if [ ! -f "sites/$1" ]
+  then
+    echo "Nonexistent site: $1"
+    return 1
+  fi
+
+  cat "sites/$1"
+}
+
+list() {
+  [ ! -f "etc-pihole/whitelist.txt" ] && return
+
+  # look for the site headers. show just the site name in the results.
+  grep -E "# === site:(.*) start ===" etc-pihole/whitelist.txt | sed -E 's/# === site:(.*) start ===/\1/'
+}
+
+add() {
+  if [ -z "$1" ]
+  then
+    echo "Usage: pwm add site"
+    return 1
+  fi
+
+  if [ ! -f "sites/$1" ]
+  then
+    echo "Nonexistent site: $1"
+    return 1
+  fi
+
+  # todo. accept multiple sites
+
+  cat sites/"$1" >> etc-pihole/whitelist.txt
+
+  # todo. run pihole command
+}
+
+remove() {
+  if [ -z "$1" ]
+  then
+    echo "Usage: pwm remove site"
+    return 1
+  fi
+
+  if [ ! -f "sites/$1" ]
+  then
+    echo "Nonexistent site: $1"
+    return 1
+  fi
+
+  # todo. warn if the site isn't in whitelist.
+  # todo. accept multiple sites
+
+  perl -i -0pe "s/# === site:$1 start ===.*# === site:$1 end ===\n//sg" etc-pihole/whitelist.txt
+
+  # todo. run pihole command
+}
+
+if declare -f "$1" >/dev/null 2>&1; then
+  "$@"
+else
+  echo "Unrecognized command: $1"
+
+  exit 1
+fi
+
+# todo. make it work with live directories, not test directories
+# todo. help screens?
